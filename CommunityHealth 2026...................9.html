@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMS Community Health 2026 ......9 - EXAM MODE</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        body {
+            background: linear-gradient(145deg, #8a4a3a, #aa6a5a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .app {
+            width: 100vw;
+            height: 100vh;
+            height: -webkit-fill-available;
+            max-width: 100%;
+            max-height: 100%;
+            background: #f7f0ea;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(145deg, #7a3a2a, #9a5a4a);
+            color: #f7f0ea;
+            padding: 10px 18px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 56px;
+            border-bottom: 3px solid #e8b8a8;
+            gap: 10px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .header h1 {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            color: #f7f0ea;
+        }
+        .header h1 span {
+            background: #e8b8a8;
+            color: #7a3a2a;
+            font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+            padding: 3px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            opacity: 0.85;
+            color: #e8d0c8;
+        }
+        .counter {
+            background: rgba(255,255,255,0.12);
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+            border: 2px solid #e8b8a8;
+            flex-shrink: 0;
+            white-space: nowrap;
+            color: #f7f0ea;
+        }
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #e8d0c8;
+            flex-shrink: 0;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #e8b8a8, #9a5a4a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            background: #f7f0ea;
+            overflow: hidden;
+            min-height: 0;
+        }
+        .chapter-indicator {
+            background: #ffffff;
+            padding: 4px 14px;
+            border-radius: 60px;
+            display: inline-block;
+            align-self: flex-start;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            color: #7a3a2a;
+            border: 2px solid #e8b8a8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .chapter-indicator i {
+            background: #9a5a4a;
+            color: white;
+            padding: 1px 10px;
+            border-radius: 40px;
+            margin-right: 8px;
+            font-style: normal;
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+        }
+        .badge {
+            background: #e8b8a8;
+            color: #7a3a2a;
+            font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .question-area {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border: 2px solid #e8b8a8;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .question-header {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        .question-number {
+            background: linear-gradient(145deg, #7a3a2a, #9a5a4a);
+            color: white;
+            width: clamp(34px, 6vw, 44px);
+            height: clamp(34px, 6vw, 44px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: bold;
+            flex-shrink: 0;
+            border: 2px solid #e8b8a8;
+        }
+        .question-text {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            line-height: 1.4;
+            color: #3a1a0a;
+            font-weight: 600;
+            flex: 1;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .option {
+            padding: 10px 14px;
+            border: 2px solid #e0d0c8;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.12s;
+            background: #fdfaf8;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+            min-height: 44px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+            color: #3a1a0a;
+        }
+        .option:active {
+            transform: scale(0.98);
+        }
+        .option:hover {
+            background: #f5ece8;
+            border-color: #c8a898;
+        }
+        .option-letter {
+            background: linear-gradient(145deg, #9a5a4a, #7a3a2a);
+            color: white;
+            width: clamp(30px, 5vw, 38px);
+            height: clamp(30px, 5vw, 38px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: clamp(0.85rem, 2vw, 1.05rem);
+            flex-shrink: 0;
+            border: 2px solid #e8b8a8;
+            transition: all 0.12s;
+        }
+        .option.selected {
+            background: #f5ece8;
+            border-color: #c8a898;
+        }
+        .option.selected .option-letter {
+            background: #c8a898;
+            color: #7a3a2a;
+            border-color: #7a3a2a;
+        }
+        .option.correct {
+            background: #d4e8d4;
+            border-color: #4a8a5a;
+        }
+        .option.correct .option-letter {
+            background: #4a8a5a;
+            border-color: #3a6a4a;
+            color: white;
+        }
+        .option.incorrect {
+            background: #f0d8d4;
+            border-color: #b06a5a;
+        }
+        .option.incorrect .option-letter {
+            background: #b06a5a;
+            border-color: #8a4a3a;
+            color: white;
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.85;
+        }
+        .option.disabled:hover {
+            background: #fdfaf8;
+            border-color: #e0d0c8;
+        }
+        .selected-indicator {
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            color: #9a5a4a;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            min-height: 20px;
+        }
+        .rationale {
+            background: #f5ece8;
+            border: 2px solid #c8a898;
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin-top: 6px;
+            display: none;
+            animation: slideIn 0.2s ease;
+            flex-shrink: 0;
+            max-height: 130px;
+            overflow-y: auto;
+        }
+        .rationale.show {
+            display: block;
+        }
+        .rationale h4 {
+            color: #7a3a2a;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rationale p {
+            color: #3a1a0a;
+            line-height: 1.4;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+        }
+        .result-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .result-tag.correct {
+            background: #d4e8d4;
+            color: #3a6a4a;
+            border: 1px solid #4a8a5a;
+        }
+        .result-tag.incorrect {
+            background: #f0d8d4;
+            color: #8a4a3a;
+            border: 1px solid #b06a5a;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #e8ddd5;
+            border-top: 2px solid #e8b8a8;
+            flex-shrink: 0;
+            min-height: 50px;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .nav-left {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .nav-right {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            touch-action: manipulation;
+            min-height: 34px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-primary {
+            background: linear-gradient(145deg, #9a5a4a, #7a3a2a);
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+        .btn-secondary {
+            background: linear-gradient(145deg, #9a5a4a, #7a3a2a);
+            color: white;
+            opacity: 0.85;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+        .btn-random {
+            background: linear-gradient(145deg, #e8b8a8, #c8a898);
+            color: #7a3a2a;
+        }
+        .btn-random:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        .btn-chapter {
+            background: white;
+            color: #7a3a2a;
+            border: 2px solid #e8b8a8;
+            padding: 4px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-chapter:hover:not(:disabled) {
+            background: #f5ece8;
+            transform: translateY(-1px);
+        }
+        .btn-cancel {
+            background: linear-gradient(145deg, #e8b8b0, #d48a7a);
+            color: white;
+            display: none;
+            padding: 6px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-cancel.show {
+            display: flex;
+        }
+        .btn-skip {
+            background: linear-gradient(145deg, #9a8a80, #7a6a60);
+            color: white;
+            padding: 6px 12px;
+            font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+        }
+        .btn-skip:hover:not(:disabled) {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: min(92vw, 500px);
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: modalPop 0.2s ease;
+        }
+        .modal-header {
+            background: linear-gradient(145deg, #7a3a2a, #9a5a4a);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #e8b8a8;
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            font-weight: 700;
+        }
+        .modal-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .modal-search {
+            padding: 10px 16px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .modal-search input {
+            width: 100%;
+            padding: 8px 14px;
+            border: 2px solid #e0d0c8;
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+            outline: none;
+            background: #fdfaf8;
+        }
+        .modal-search input:focus {
+            border-color: #c8a898;
+        }
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+        .ch-card {
+            border: 2px solid #e8ddd5;
+            border-radius: 14px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+        }
+        .ch-card:hover {
+            border-color: #c8a898;
+            background: #f5ece8;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .ch-card.active {
+            border-color: #c8a898;
+            background: #f5ece8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .ch-card.hidden {
+            display: none !important;
+        }
+        .ch-num {
+            background: linear-gradient(145deg, #7a3a2a, #9a5a4a);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            flex-shrink: 0;
+            border: 2px solid #e8b8a8;
+        }
+        .ch-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .ch-title {
+            font-weight: 600;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            color: #3a1a0a;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ch-count {
+            font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+            color: #8a7a6a;
+            margin-top: 1px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .question-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .question-area::-webkit-scrollbar-track {
+            background: #f7f0ea;
+        }
+        .question-area::-webkit-scrollbar-thumb {
+            background: #e8b8a8;
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: #f7f0ea;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #e8b8a8;
+            border-radius: 10px;
+        }
+        .rationale::-webkit-scrollbar {
+            width: 3px;
+        }
+        .rationale::-webkit-scrollbar-track {
+            background: #f5ece8;
+        }
+        .rationale::-webkit-scrollbar-thumb {
+            background: #c8a898;
+            border-radius: 10px;
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header { min-height: 42px; padding: 5px 14px; }
+            .header h1 { font-size: 0.85rem; }
+            .subtitle { display: none; }
+            .counter { font-size: 0.75rem; padding: 3px 10px; }
+            .main { padding: 5px 10px; }
+            .chapter-indicator { font-size: 0.65rem; padding: 3px 10px; margin-bottom: 4px; }
+            .question-area { padding: 8px 12px; border-radius: 12px; }
+            .question-header { margin-bottom: 5px; gap: 8px; }
+            .question-number { width: 26px; height: 26px; font-size: 0.75rem; border-width: 1.5px; }
+            .question-text { font-size: 0.8rem; line-height: 1.2; }
+            .option { padding: 5px 10px; min-height: 30px; gap: 8px; font-size: 0.75rem; border-radius: 10px; border-width: 1.5px; }
+            .option-letter { width: 24px; height: 24px; font-size: 0.7rem; border-width: 1.5px; }
+            .options-container { gap: 4px; }
+            .rationale { padding: 6px 10px; max-height: 60px; }
+            .rationale h4 { font-size: 0.7rem; }
+            .rationale p { font-size: 0.7rem; line-height: 1.2; }
+            .navigation { min-height: 36px; padding: 4px 8px; }
+            .btn { padding: 3px 10px; font-size: 0.65rem; min-height: 26px; gap: 3px; }
+            .selected-indicator { font-size: 0.65rem; min-height: 16px; }
+            .badge { font-size: 0.55rem; padding: 1px 6px; }
+            .result-tag { font-size: 0.6rem; padding: 1px 8px; }
+        }
+
+        @media (max-width: 360px) {
+            .header h1 { font-size: 0.85rem; }
+            .counter { font-size: 0.7rem; padding: 3px 8px; }
+            .question-text { font-size: 0.85rem; }
+            .option { font-size: 0.8rem; padding: 8px 10px; min-height: 36px; }
+            .option-letter { width: 26px; height: 26px; font-size: 0.7rem; }
+            .btn { font-size: 0.65rem; padding: 4px 8px; min-height: 28px; }
+            .navigation { min-height: 40px; padding: 4px 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <div class="header">
+        <div class="header-left">
+            <h1>🩺 CMS Community Health <span>......9</span></h1>
+            <div class="subtitle">32 questions · BSN 4</div>
+        </div>
+        <div class="counter" id="counter">1/32</div>
+    </div>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="main">
+        <div class="chapter-indicator" id="chapterDisplay">
+            <i id="chapterIcon">📗</i>
+            <span id="chapterName">Community Health</span>
+            <span class="badge" id="qTypeBadge">Single</span>
+            <span id="resultTag" class="result-tag"></span>
+        </div>
+        <div class="question-area" id="questionArea">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">1</div>
+                <div class="question-text" id="question"></div>
+            </div>
+            <div class="options-container" id="options"></div>
+            <div id="selectedCount" class="selected-indicator"></div>
+            <div class="rationale" id="rationale">
+                <h4>📗 RATIONALE</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+    </div>
+    <div class="navigation">
+        <div class="nav-left">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">← Prev</button>
+            <button class="btn btn-random" id="randomBtn" onclick="randomCard()">🎲 Rand</button>
+            <button class="btn btn-chapter" onclick="openChapterModal()">📚 Ch</button>
+        </div>
+        <div class="nav-right">
+            <button class="btn btn-skip" id="skipBtn" onclick="skipQuestion()">⏭ Skip</button>
+            <button class="btn btn-cancel" id="cancelBtn" onclick="cancelSelection()">✕ Clear</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">Next →</button>
+        </div>
+    </div>
+</div>
+
+<!-- Chapter Modal -->
+<div class="modal-overlay" id="chapterModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>📚 Jump to Chapter</h2>
+            <button class="modal-close" onclick="closeChapterModal()">✕</button>
+        </div>
+        <div class="modal-search">
+            <input type="text" id="chSearch" placeholder="🔍 Search..." oninput="filterChapters(this.value)" />
+        </div>
+        <div class="modal-body" id="chapterGrid"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var currentQuestion = 0;
+    var selectedOptions = [];
+    var answered = false;
+
+    var questions = [
+        {q:"A community health nurse is assigned to a high school to address concerns regarding a recent increase in unplanned adolescent pregnancies. When an adolescent client seeks assistance for an unplanned pregnancy, which action should the nurse take first to advocate for the client?", opts:["Schedule a prenatal appointment with an obstetrician.","Contact the client's parents to inform them of the pregnancy status.","Assess the client's personal goals and understanding of available options.","Refer the client immediately to a local adoption agency."], correct:[2], rationale:"The nurse should first assess the client's personal goals and understanding of available options to provide client-centered advocacy. This respects the client's autonomy and ensures informed decision-making. Scheduling appointments, contacting parents, or referring to adoption agencies without assessment would undermine the client's right to self-determination.", chapter:1, chapName:"Community Health", displayNumber:1},
+        {q:"The nurse is conducting a home safety evaluation for an older adult client who was recently discharged following a hip fracture. Which recommendation is the priority for the nurse to include in the home modification plan to prevent further injury?", opts:["Increasing the wattage of all light bulbs in the kitchen.","Installing a security system with cameras.","Removing unsecured area rugs and installing grab bars in the bathroom.","Replacing all hardwood floors with wall-to-wall carpeting."], correct:[2], rationale:"Removing unsecured area rugs and installing grab bars in the bathroom are the priority interventions to prevent falls. Area rugs are a major tripping hazard, and grab bars provide support in high-risk areas like the bathroom. Light bulb wattage, security systems, and carpeting are less immediately impactful for fall prevention.", chapter:1, chapName:"Home Safety", displayNumber:2},
+        {q:"A nurse is planning a community health fair focused on screening and prevention. Which health promotion activity should the nurse prioritize for families living in older urban housing?", opts:["Offering free cholesterol screenings for toddlers.","Teaching about the importance of annual hearing tests for infants.","Providing education on screening for lead exposure and its health effects.","Distributing brochures on the benefits of organic gardening."], correct:[2], rationale:"Lead exposure screening is the priority for families in older urban housing due to the prevalence of lead-based paint in older homes. Lead poisoning can cause serious developmental issues in children. Cholesterol screenings for toddlers, hearing tests for infants, and organic gardening are not the highest priority for this population.", chapter:1, chapName:"Environmental Health", displayNumber:3},
+        {q:"A community nurse is visiting a client who is in the end stages of a terminal respiratory illness. Which intervention should the nurse implement to support the psychosocial integrity of the dying client experiencing respiratory distress?", opts:["Administer high-flow oxygen via a non-rebreather mask at 15 L/min.","Advise the family to limit all conversation to reduce the client's exertion.","Encourage the client to perform vigorous deep-breathing exercises.","Provide a calm environment and use a fan to circulate air near the client."], correct:[3], rationale:"Providing a calm environment and using a fan to circulate air helps alleviate the sensation of dyspnea (air hunger) through nonpharmacological comfort measures. High-flow oxygen may not be appropriate, limiting conversation can increase anxiety, and vigorous breathing exercises are exhausting for a dying client.", chapter:1, chapName:"Hospice Care", displayNumber:4},
+        {q:"A client is inquiring about using herbal supplements as an alternative therapy for chronic pain. The client is currently taking prescribed anticoagulants for atrial fibrillation. Which action is essential for the nurse to take regarding the use of alternative therapies for this client?", opts:["Recommend the client start with a low dose of Ginkgo biloba.","Instruct the client that alternative therapies have no side effects.","Advise the client to replace all medications with acupuncture.","Identify contraindications between herbal supplements and prescribed medications."], correct:[3], rationale:"Identifying contraindications is essential because many herbal supplements (e.g., ginkgo, garlic, ginger) interact with anticoagulants and increase bleeding risk. Recommending ginkgo, claiming no side effects, or advising replacement of medications are unsafe practices.", chapter:1, chapName:"Complementary Therapies", displayNumber:5},
+        {q:"A nurse is reviewing telehealth data for a group of clients with heart failure. The data shows that three clients have not logged their daily weights for over 48 hours. Which action should the nurse take to evaluate the outcomes of the telehealth service?", opts:["Delete the non-compliant clients from the telehealth database.","Contact the clients to determine the reason for the lack of data transmission.","Assume the clients are doing well and no longer need the service.","Wait for the monthly report to address the issue."], correct:[1], rationale:"Contacting clients to determine the reason for missing data is the appropriate evaluation action. This allows the nurse to identify barriers and improve telehealth outcomes. Deleting clients, assuming they are well, or waiting for monthly reports are not proactive evaluation strategies.", chapter:1, chapName:"Telehealth", displayNumber:6},
+        {q:"A community health nurse is conducting an initial assessment of a neighborhood after several reports of a potential foodborne illness outbreak following a local festival. Which step of the nursing process is being utilized when the nurse identifies patterns and trends in the reported symptoms to draw conclusions?", opts:["Implementation","Evaluation","Analysis","Assessment"], correct:[2], rationale:"Identifying patterns and trends in data to draw conclusions is the Analysis step of the nursing process. Assessment is data collection, Implementation is carrying out interventions, and Evaluation is determining the effectiveness of interventions.", chapter:1, chapName:"Nursing Process", displayNumber:7},
+        {q:"A nurse is preparing a presentation on health disparities within the local population. Which level of Bloom's Taxonomy is primarily utilized when the nurse applies knowledge of epidemiology to manage a clinical situation in the community?", opts:["Remembering","Creating","Understanding","Applying"], correct:[3], rationale:"Applying is the level of Bloom's Taxonomy used when the nurse uses knowledge in a new or specific situation. Remembering is recall, Understanding is comprehension, and Creating is generating new ideas or products.", chapter:1, chapName:"Education", displayNumber:8},
+        {q:"A community health nurse has a caseload including a newly diagnosed tuberculosis (TB) client, an elderly client needing a home safety check, and a school-aged child needing a vision screening. Using priority setting, which client should the nurse visit first?", opts:["The school-aged child needing a vision screening.","The client requesting a referral for a local exercise class.","The elderly client needing a home safety check.","The client newly diagnosed with tuberculosis (TB)."], correct:[3], rationale:"The client newly diagnosed with TB should be visited first due to the potential for airborne transmission and the need for immediate public health intervention. Vision screening, exercise referrals, and home safety checks are important but not urgent public health priorities.", chapter:1, chapName:"Priority Setting", displayNumber:9},
+        {q:"A community health nurse is assigned to a high school to address concerns regarding a recent increase in unplanned adolescent pregnancies. Which QSEN competency is demonstrated when the nurse uses current research on adolescent health behaviors to design the outreach program?", opts:["Informatics","Quality Improvement","Evidence-Based Practice","Teamwork and Collaboration"], correct:[2], rationale:"Using current research to design the outreach program demonstrates Evidence-Based Practice (EBP). Informatics involves using technology, Quality Improvement focuses on process improvement, and Teamwork involves collaboration with other disciplines.", chapter:1, chapName:"QSEN", displayNumber:10},
+        {q:"A nurse is working with a local community board to advocate for increased funding for mental health services. According to NLN Competencies, which value is the nurse reflecting by using advocacy to enhance the health of this population?", opts:["Nursing Judgment","Human Flourishing","Professional Identity","Spirit of Inquiry"], correct:[1], rationale:"Human Flourishing is the NLN competency that involves advocating for conditions that promote health and well-being. Nursing Judgment involves clinical decision-making, Professional Identity relates to role development, and Spirit of Inquiry involves questioning and research.", chapter:1, chapName:"NLN Competencies", displayNumber:11},
+        {q:"A nurse is participating in a multidisciplinary team meeting to coordinate care for a homeless population. Which BSN Essential is most directly applied when the nurse functions as a member of this healthcare team?", opts:["Interprofessional Communication and Collaboration","Scholarship for Practice","Clinical Prevention and Population Health","Liberal Education"], correct:[0], rationale:"Interprofessional Communication and Collaboration is the BSN Essential that applies when working with social workers, physicians, and city officials. Scholarship for Practice involves evidence-based care, Clinical Prevention focuses on population health, and Liberal Education provides broad knowledge.", chapter:1, chapName:"BSN Essentials", displayNumber:12},
+        {q:"A nurse is teaching a group of day care providers about infectious childhood diseases. Which of the following is a primary prevention strategy?", opts:["Screening children for symptoms of chickenpox.","Administering antibiotics to a child with a known infection.","Caring for a child in an isolation room after diagnosis.","Educating providers on the importance of childhood immunizations."], correct:[3], rationale:"Primary prevention aims to prevent disease before it occurs. Educating providers on immunizations is a primary prevention strategy. Screening is secondary prevention, and antibiotics and isolation are tertiary/secondary interventions.", chapter:1, chapName:"Prevention Levels", displayNumber:13},
+        {q:"A nurse is using an interpreter to communicate with a non-English speaking client. Which action best demonstrates the role of the nurse as a client advocate?", opts:["Allowing the interpreter to give their own medical advice to the client.","Ensuring the interpreter conveys the client's questions and concerns accurately to the provider.","Asking the interpreter to paraphrase the medical diagnosis to save time.","Looking directly at the interpreter while speaking."], correct:[1], rationale:"Ensuring the interpreter accurately conveys the client's questions and concerns demonstrates advocacy by protecting the client's right to be heard. Looking at the interpreter, allowing them to give advice, or paraphrasing inaccurately are not advocacy behaviors.", chapter:1, chapName:"Advocacy", displayNumber:14},
+        {q:"A nurse is performing a Snellen visual acuity test. At which distance should the client stand from the chart?", opts:["20 feet","50 feet","5 feet","10 feet"], correct:[0], rationale:"The Snellen chart should be placed at 20 feet (6 meters) from the client. This standard distance allows for accurate measurement of visual acuity. Other distances are incorrect for this specific test.", chapter:1, chapName:"Screening", displayNumber:15},
+        {q:"A nurse is discussing expected grief reactions with a client who recently lost a spouse. Which statement by the nurse correctly identifies a stage of the grief process?", opts:["'Denial only happens to people who lack a support system.'","'Acceptance usually occurs within the first 24 hours.'","'Anger is an abnormal response and should be suppressed.'","'Bargaining is a stage where you might try to negotiate for more time.'"], correct:[3], rationale:"Bargaining is a recognized stage of grief where the individual may try to negotiate for more time or different outcomes. Denial is a normal response, acceptance takes time, and anger is a normal grief response, not abnormal.", chapter:1, chapName:"Grief", displayNumber:16},
+        {q:"A nurse is teaching a group about the psychomotor domain of learning. Which activity is an example of this domain?", opts:["The client expresses a willingness to stop smoking.","The client lists the side effects of their medication.","The client demonstrates the correct technique for self-administering insulin.","The client describes the benefits of a low-sodium diet."], correct:[2], rationale:"The psychomotor domain involves physical skills and actions. Demonstrating insulin administration is a psychomotor skill. Expressing willingness is affective domain, and listing/describing is cognitive domain.", chapter:1, chapName:"Learning Domains", displayNumber:17},
+        {q:"During an outbreak investigation, which host factor increases the likelihood of injury or illness?", opts:["A high level of humidity in the environment.","The virulence of the infecting organism.","The presence of a toxic chemical in the water supply.","A client's compromised immune system."], correct:[3], rationale:"Host factors are characteristics of the individual affected. A compromised immune system increases susceptibility to illness. Humidity and toxins are environmental factors, and virulence is an agent factor.", chapter:1, chapName:"Epidemiology", displayNumber:18},
+        {q:"A nurse is planning to administer a Tuberculin Skin Test (TST). Which route of administration should the nurse use?", opts:["Intramuscular","Subcutaneous","Intradermal","Intravenous"], correct:[2], rationale:"The Tuberculin Skin Test (Mantoux test) is administered intradermally, usually on the forearm. This route allows for proper wheal formation and accurate reading. Intramuscular, subcutaneous, and intravenous routes are incorrect for TST.", chapter:1, chapName:"Tuberculosis", displayNumber:19},
+        {q:"Which QSEN competency focuses on minimizing risk factors that could cause injury while promoting quality care?", opts:["Safety","Evidence Based Practice","Care","Teamwork and Collaboration"], correct:[0], rationale:"Safety is the QSEN competency that focuses on minimizing risk of harm to clients and providers. Evidence-Based Practice uses current evidence, Care is patient-centered, and Teamwork involves collaboration.", chapter:1, chapName:"QSEN", displayNumber:20},
+        {q:"Which BSN Essential emphasizes identifying health-related risk factors and facilitating behaviors that support disease prevention based on epidemiology?", opts:["Professionalism and Professional Values","Scholarship for Practice","Clinical Prevention and Population Health","Baccalaureate Generalist Nursing Practice"], correct:[2], rationale:"Clinical Prevention and Population Health is the BSN Essential that focuses on identifying risk factors and promoting disease prevention using epidemiological principles. Professionalism, Scholarship, and Generalist Practice are different domains.", chapter:1, chapName:"BSN Essentials", displayNumber:21},
+        {q:"A nurse is identifying risk factors for partner violence during a community assessment. Which of the following is a recognized risk factor?", opts:["Strong community support systems.","Pregnancy in the female partner.","Equal distribution of power in the relationship.","High level of education in both partners."], correct:[1], rationale:"Pregnancy is a recognized risk factor for intimate partner violence, as it can increase stress and vulnerability. Strong support systems, equal power distribution, and high education levels are protective factors, not risk factors.", chapter:1, chapName:"Violence Prevention", displayNumber:22},
+        {q:"A nurse is addressing a community concern regarding a rise in local air pollution. According to the nursing process, which action should the nurse take first?", opts:["Write a letter to the editor of the local newspaper.","Conduct an assessment of the community's respiratory health and pollution levels.","Advise all residents to stay indoors permanently.","Organize a protest at the local factory."], correct:[1], rationale:"Assessment is the first step of the nursing process. The nurse must assess respiratory health and pollution levels before planning interventions. Writing letters, advising isolation, or organizing protests are implementation steps that should follow assessment.", chapter:1, chapName:"Nursing Process", displayNumber:23},
+        {q:"A nurse is determining if an older adult client is experiencing social isolation. Which finding indicates a potential for isolation?", opts:["The client attends a weekly book club.","The client uses a smartphone to video call grandchildren.","The client volunteers at a local food bank twice a month.","The client lives alone and has no living relatives in the area."], correct:[3], rationale:"Living alone with no living relatives in the area is a significant indicator of potential social isolation. Attending book clubs, video calling grandchildren, and volunteering indicate social engagement and support.", chapter:1, chapName:"Social Isolation", displayNumber:24},
+        {q:"A nurse is teaching a community group about primary prevention. Which of the following should the nurse include as an example?", opts:["Using a condom during sexual intercourse to prevent STI transmission.","Taking prescribed medication for hypertension.","Physical therapy after a stroke.","Undergoing a colonoscopy for cancer screening."], correct:[0], rationale:"Primary prevention prevents disease before it occurs. Using a condom is a primary prevention strategy. Taking medication and physical therapy are tertiary/secondary, and colonoscopy is secondary prevention.", chapter:1, chapName:"Prevention Levels", displayNumber:25},
+        {q:"Which statement best defines the nurse's role as a 'Case Manager' for an adolescent client?", opts:["Administering routine clinical care and medication updates to the student during school hours.","Coordinating healthcare services across various agencies and arranging community resource referrals.","Providing immediate, one-on-one psychological counseling to address family dynamics.","Enforcing school rules and document management protocols regarding pregnancy tracking."], correct:[1], rationale:"Case management involves coordinating services and arranging referrals across agencies. Administering clinical care, providing counseling, or enforcing rules are not case management functions but rather direct care or administrative roles.", chapter:1, chapName:"Case Management", displayNumber:26},
+        {q:"Which option correctly identifies and structures the critical components involved in an 'Outbreak Investigation'?", opts:["Quarantining suspected areas, filing legal claims against vendors, and closing local businesses.","Distributing prophylactic medications, treating all attendees, and designing alternative future events.","Defining a clinical case profile, identifying exposed patterns, and calculating attack rates to pinpoint sources.","Conducting routine visual skin checks, performing baseline laboratory workups, and writing newspaper warnings."], correct:[2], rationale:"Outbreak investigation involves defining the clinical case, identifying exposure patterns, and calculating attack rates to identify the source. Quarantining, legal claims, distributing medications, and newspaper warnings are not core investigation components.", chapter:1, chapName:"Epidemiology", displayNumber:27},
+        {q:"How is the 'Evaluation' step of the nursing process applied to telehealth services in a community setting?", opts:["Deleting historical health records to make space for newly transmitted data inputs.","Restricting care accessibility for individuals who do not comply with digital requirements.","Comparing post-intervention adherence logs and data accuracy metrics against expected clinical baseline outcomes.","Researching software platforms to replace the existing system before checking client compliance."], correct:[2], rationale:"Evaluation involves comparing outcomes against expected baselines. Deleting records, restricting care, or researching new platforms are not evaluation activities but rather administrative or planning activities.", chapter:1, chapName:"Telehealth", displayNumber:28},
+        {q:"Which combination of interventions should the nurse prioritize to manage dyspnea nonpharmacologically?", opts:["Elevating the head of the bed, creating a cool breeze with a fan, and introducing a calm environment.","Administering high-dose cough drops, encouraging deep-breathing cycles, and limiting room ventilation.","Initiating strict fluid intake restrictions, applying warm chest compresses, and encouraging vocalization.","Placing the client in a prone position, using sensory-deprivation tactics, and playing energetic music."], correct:[0], rationale:"Elevating the head of the bed, using a fan for air circulation, and providing a calm environment are evidence-based nonpharmacological interventions for dyspnea. Cough drops, fluid restrictions, prone positioning, and sensory deprivation are not appropriate.", chapter:1, chapName:"Hospice Care", displayNumber:29},
+        {q:"Within the context of community health nursing education, what is the main distinction between 'Foundational Thinking' and 'Clinical Application'?", opts:["Foundational thinking requires evaluating financial options, while clinical application restricts actions to client documentation.","Foundational thinking focuses on recalling or understanding basic epidemiologic facts, whereas clinical application involves utilizing that knowledge to manage complex community scenarios.","Foundational thinking deals only with laboratory diagnostic rules, while clinical application is used only during hospital shift transfers.","Foundational thinking manages multi-agency case files, whereas clinical application creates completely new nursing theories."], correct:[1], rationale:"Foundational thinking involves recalling and understanding basic facts and concepts. Clinical application uses that knowledge to manage complex, real-world situations. The other options describe inaccurate distinctions.", chapter:1, chapName:"Education", displayNumber:30},
+        {q:"Which combination of strategies forms a comprehensive 'Primary Prevention' plan for a community concerned about a local outbreak of an infectious childhood disease like Pertussis?", opts:["Setting up secondary mobile clinic tents to provide standard diagnostic throat cultures and sputum collections.","Initiating public education on vaccine schedules, enforcing mandatory daycare sanitization protocols, and launching community-wide booster immunization clinics.","Implementing isolation tracks for all symptomatic children and starting standard prophylactic antibiotic regimens.","Arranging tracking systems to document long-term respiratory damage and referring recovering children to specialized clinics."], correct:[1], rationale:"Primary prevention focuses on preventing disease before it occurs. Education on vaccines, daycare sanitization, and booster immunization clinics are primary prevention strategies. Diagnostic testing, isolation, and tracking damage are secondary or tertiary interventions.", chapter:1, chapName:"Prevention Levels", displayNumber:31},
+        {q:"When applying the 'Clinical Judgment' model to an adolescent client with an unplanned pregnancy, which sequence reflects the correct progression of nursing actions?", opts:["Formulate long-term legal options, inform school administrators, and design a specialized alternative study path.","Recognize physiologic or psychological cues, analyze underlying client vulnerabilities, and take action by assessing goals and outlining support options.","Arrange immediate obstetric referrals, schedule parent conferences, and mandate homebound instruction tracks.","Request public health grant funding, order specialized laboratory diagnostic panels, and implement lifestyle change targets."], correct:[1], rationale:"Clinical judgment follows: Recognize cues, analyze cues, prioritize hypotheses, generate solutions, take action, and evaluate outcomes. Recognizing cues, analyzing vulnerabilities, and taking action by assessing goals and outlining support options reflects this sequence.", chapter:1, chapName:"Clinical Judgment", displayNumber:32}
+    ];
+
+    var chapterList = [
+        {ch:1, name:"Community Health & Nursing", count: questions.filter(function(q){return q.chapter===1;}).length}
+    ];
+
+    var chapterIndex = {};
+    questions.forEach(function(q, idx) {
+        if (!chapterIndex[q.chapter]) chapterIndex[q.chapter] = {firstIdx: idx};
+    });
+
+    function isMultiSelect(q) { return q.correct.length > 1; }
+
+    function updateSelectedCount() {
+        var q = questions[currentQuestion];
+        var el = document.getElementById('selectedCount');
+        if (isMultiSelect(q) && !answered) {
+            el.textContent = selectedOptions.length > 0 ? 'Selected: ' + selectedOptions.length + ' of ' + q.correct.length + ' correct answers' : 'Select all that apply';
+        } else { el.textContent = ''; }
+    }
+
+    function selectOption(idx) {
+        if (answered) return;
+        var q = questions[currentQuestion];
+        if (isMultiSelect(q)) {
+            var pos = selectedOptions.indexOf(idx);
+            if (pos === -1) { selectedOptions.push(idx); }
+            else { selectedOptions.splice(pos, 1); }
+            var opts = document.querySelectorAll('.option');
+            opts.forEach(function(o, i) {
+                o.classList.toggle('selected', selectedOptions.indexOf(i) !== -1);
+            });
+            updateSelectedCount();
+            var cancelBtn = document.getElementById('cancelBtn');
+            if (selectedOptions.length > 0) { cancelBtn.classList.add('show'); }
+            else { cancelBtn.classList.remove('show'); }
+            if (selectedOptions.length === q.correct.length) {
+                document.getElementById('nextBtn').disabled = false;
+                submitAnswer();
+            }
+        } else {
+            selectedOptions = [idx];
+            var opts = document.querySelectorAll('.option');
+            opts.forEach(function(o, i) { o.classList.toggle('selected', i === idx); });
+            updateSelectedCount();
+            document.getElementById('cancelBtn').classList.add('show');
+            document.getElementById('nextBtn').disabled = false;
+            submitAnswer();
+        }
+    }
+
+    function submitAnswer() {
+        answered = true;
+        var q = questions[currentQuestion];
+        var isCorrect = selectedOptions.length === q.correct.length &&
+            selectedOptions.every(function(i){ return q.correct.indexOf(i) !== -1; });
+        var opts = document.querySelectorAll('.option');
+        opts.forEach(function(o, i) {
+            o.classList.remove('selected');
+            if (q.correct.indexOf(i) !== -1) { o.classList.add('correct'); }
+            else if (selectedOptions.indexOf(i) !== -1) { o.classList.add('incorrect'); }
+            o.classList.add('disabled');
+        });
+        var tag = document.getElementById('resultTag');
+        tag.textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
+        tag.className = 'result-tag ' + (isCorrect ? 'correct' : 'incorrect');
+        document.getElementById('rationaleText').textContent = q.rationale;
+        document.getElementById('rationale').classList.add('show');
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = false;
+    }
+
+    function cancelSelection() {
+        selectedOptions = [];
+        var opts = document.querySelectorAll('.option');
+        opts.forEach(function(o) { o.classList.remove('selected','correct','incorrect','disabled'); });
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('resultTag').innerHTML = '';
+        document.getElementById('resultTag').className = 'result-tag';
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = true;
+        answered = false;
+        updateSelectedCount();
+    }
+
+    function skipQuestion() {
+        if (!answered) {
+            cancelSelection();
+        }
+        nextCard();
+    }
+
+    function nextCard() {
+        if (currentQuestion < questions.length - 1) { currentQuestion++; loadQuestion(); }
+        else { currentQuestion = 0; loadQuestion(); }
+    }
+
+    function previousCard() {
+        if (currentQuestion > 0) { currentQuestion--; loadQuestion(); }
+    }
+
+    function randomCard() {
+        var idx;
+        do { idx = Math.floor(Math.random() * questions.length); }
+        while (idx === currentQuestion && questions.length > 1);
+        currentQuestion = idx;
+        loadQuestion();
+    }
+
+    function buildChapterGrid() {
+        var grid = document.getElementById('chapterGrid');
+        grid.innerHTML = '';
+        var currentCh = questions[currentQuestion].chapter;
+        chapterList.forEach(function(item) {
+            var ch = item.ch;
+            var card = document.createElement('div');
+            card.className = 'ch-card' + (ch === currentCh ? ' active' : '');
+            card.id = 'ch-card-' + ch;
+            card.setAttribute('data-name', ('chapter ' + ch + ' ' + item.name).toLowerCase());
+            card.innerHTML = '<div class="ch-num">' + ch + '</div><div class="ch-info"><div class="ch-title">Ch ' + ch + ': ' + item.name + '</div><div class="ch-count">' + item.count + ' questions</div></div>';
+            card.onclick = (function(c){ return function(){ jumpToChapter(c); }; })(ch);
+            grid.appendChild(card);
+        });
+        var active = document.getElementById('ch-card-' + currentCh);
+        if (active) setTimeout(function(){ active.scrollIntoView({block:'nearest',behavior:'smooth'}); }, 50);
+    }
+
+    function jumpToChapter(ch) {
+        currentQuestion = chapterIndex[ch].firstIdx;
+        loadQuestion();
+        closeChapterModal();
+    }
+
+    function openChapterModal() {
+        buildChapterGrid();
+        document.getElementById('chSearch').value = '';
+        document.getElementById('chapterModal').classList.add('open');
+    }
+
+    function closeChapterModal() {
+        document.getElementById('chapterModal').classList.remove('open');
+    }
+
+    function filterChapters(query) {
+        var q = query.toLowerCase().trim();
+        document.querySelectorAll('.ch-card').forEach(function(card) {
+            card.classList.toggle('hidden', q !== '' && !card.getAttribute('data-name').includes(q));
+        });
+    }
+
+    document.getElementById('chapterModal').addEventListener('click', function(e) {
+        if (e.target === this) closeChapterModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('chapterModal').classList.contains('open')) {
+            if (e.key === 'Escape') closeChapterModal();
+            return;
+        }
+        if (e.key >= '1' && e.key <= '4') {
+            var idx = parseInt(e.key) - 1;
+            if (idx < questions[currentQuestion].opts.length) selectOption(idx);
+        } else if (e.key >= 'a' && e.key <= 'd') { selectOption(e.key.charCodeAt(0) - 97);
+        } else if (e.key >= 'A' && e.key <= 'D') { selectOption(e.key.charCodeAt(0) - 65);
+        } else if (e.key === 'ArrowLeft' && !document.getElementById('prevBtn').disabled) { previousCard();
+        } else if (e.key === 'ArrowRight' && !document.getElementById('nextBtn').disabled) { nextCard();
+        } else if (e.key === 'Escape' && document.getElementById('cancelBtn').classList.contains('show')) { cancelSelection();
+        } else if (e.key === 'r' || e.key === 'R') { randomCard();
+        } else if (e.key === 's' || e.key === 'S') { skipQuestion();
+        }
+    });
+
+    function loadQuestion() {
+        var q = questions[currentQuestion];
+        if (!q) return;
+        selectedOptions = [];
+        answered = false;
+        document.getElementById('chapterName').textContent = 'Ch ' + q.chapter + ': ' + q.chapName;
+        document.getElementById('qTypeBadge').textContent = isMultiSelect(q) ? 'Multiple' : 'Single';
+        document.getElementById('questionNumber').textContent = q.displayNumber;
+        document.getElementById('question').textContent = q.q;
+        document.getElementById('counter').textContent = (currentQuestion + 1) + '/' + questions.length;
+        document.getElementById('rationale').classList.remove('show');
+        document.getElementById('resultTag').innerHTML = '';
+        document.getElementById('resultTag').className = 'result-tag';
+        document.getElementById('cancelBtn').classList.remove('show');
+        document.getElementById('nextBtn').disabled = true;
+        document.getElementById('prevBtn').disabled = currentQuestion === 0;
+        var pct = ((currentQuestion + 1) / questions.length * 100).toFixed(1);
+        document.getElementById('progressBar').style.width = pct + '%';
+        var container = document.getElementById('options');
+        container.innerHTML = '';
+        q.opts.forEach(function(opt, i) {
+            var div = document.createElement('div');
+            div.className = 'option';
+            div.innerHTML = '<div class="option-letter">' + String.fromCharCode(65 + i) + '</div><div>' + opt + '</div>';
+            div.onclick = (function(idx){ return function(){ selectOption(idx); }; })(i);
+            container.appendChild(div);
+        });
+        updateSelectedCount();
+        document.getElementById('questionArea').scrollTop = 0;
+    }
+
+    window.previousCard = previousCard;
+    window.nextCard = nextCard;
+    window.skipQuestion = skipQuestion;
+    window.cancelSelection = cancelSelection;
+    window.randomCard = randomCard;
+    window.openChapterModal = openChapterModal;
+    window.closeChapterModal = closeChapterModal;
+    window.filterChapters = filterChapters;
+
+    loadQuestion();
+})();
+</script>
+</body>
+</html>
